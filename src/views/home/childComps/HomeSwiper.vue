@@ -3,7 +3,8 @@
   <swiper>
     <swiper-item v-for="(item, index) in banners" :key="index">
       <a :href="item.link">
-        <img :src="item.image" alt="" />
+        <!-- 监听轮播图是否加载完，计算offsetTop的值 -->
+        <img :src="item.image" alt @load="imageLoad" />
       </a>
     </swiper-item>
   </swiper>
@@ -18,13 +19,26 @@ export default {
       type: Array,
       default() {
         return [];
-      }
-    }
+      },
+    },
   },
   components: {
     Swiper,
-    SwiperItem
-  }
+    SwiperItem,
+  },
+  data() {
+    return {
+      isLoad: false,
+    };
+  },
+  methods: {
+    imageLoad() {
+      if (!this.isLoad) {
+        this.$emit("siwperImageLoad");
+        this.isLoad = true;
+      }
+    },
+  },
 };
 </script>
 <style scoped></style>

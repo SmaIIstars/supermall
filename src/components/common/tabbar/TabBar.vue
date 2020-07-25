@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: "TabBar"
+  name: "TabBar",
 };
 </script>
 <style scoped>
@@ -21,5 +21,6 @@ export default {
   bottom: 0;
 
   box-shadow: 0 -3px 1px rgba(100, 100, 100, 0.1);
+  z-index: 100;
 }
 </style>
