@@ -19,11 +19,14 @@ export default {
   name: "TabBarItem",
   // 使用父传子
   props: {
-    path: String,
+    path: {
+      type: String,
+      default: "",
+    },
     activeColor: {
       type: String,
-      default: "red"
-    }
+      default: "red",
+    },
   },
   data() {
     return {
@@ -38,14 +41,14 @@ export default {
     },
     activeStyle() {
       return this.isActive ? { color: this.activeColor } : {};
-    }
+    },
   },
 
   methods: {
     itemClick() {
       this.$router.replace(this.path);
-    }
-  }
+    },
+  },
 };
 </script>
 

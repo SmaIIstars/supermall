@@ -3,7 +3,7 @@
   <div class="goods-item">
     <!-- 原生元素监听图片:img.onload = function(){} -->
     <!-- Vue监听load -->
-    <img :src="goodsItem.show.img" alt @load="imageLoad" @click="itemClick" />
+    <img :src="showImage" alt @load="imageLoad" @click="itemClick" />
     <div class="goods-info">
       <p class="title">{{ goodsItem.title }}</p>
       <div class="info-nums">
@@ -25,13 +25,20 @@ export default {
       type: Object,
       default() {
         return {};
-      },
-    },
+      }
+    }
   },
   methods: {
     imageLoad() {
       // 这里使用事件主线监听图片加载
-      this.$bus.$emit("itemImageLoad");
+      // console.log("imgeLodaGoods");
+      // 用路由区分通知哪一个
+      if (this.$route.path.indexOf("/home") !== -1) {
+        this.$bus.$emit("HomeitemImageLoad");
+      } else if (this.$route.path.indexOf("/detail") !== -1) {
+        this.$bus.$emit("DetailitemImageLoad");
+      }
+      // this.$bus.$emit("itemImageLoad");
     },
     itemClick() {
       this.$router.push("/detail/" + this.goodsItem.iid);
@@ -41,8 +48,13 @@ export default {
       //   query:{
       //   }
       // });
-    },
+    }
   },
+  computed: {
+    showImage() {
+      return this.goodsItem.image || this.goodsItem.show.img;
+    }
+  }
 };
 </script>
 <style scoped>

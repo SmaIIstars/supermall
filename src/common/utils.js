@@ -1,9 +1,11 @@
  // 防抖函数
  export function debounce(func, delay) {
-   let timer = null;
+   var timer = null;
    return function (...args) {
      if (timer) clearTimeout(timer);
      timer = setTimeout(() => {
+       //  timer = null;
+
        func.apply(this, args);
      }, delay);
    };

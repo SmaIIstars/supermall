@@ -18,6 +18,7 @@ export default {};
 </script>
 <style scoped>
 .nav-bar {
+  /* position: fixed; */
   display: flex;
   height: 44px;
   line-height: 44px;

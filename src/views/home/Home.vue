@@ -20,10 +20,18 @@
       :pullUpLoad="true"
       @pullingUp="loadMore"
     >
-      <home-swiper :banners="banners" v-if="banners" @siwperImageLoad="siwperImageLoad" />
+      <home-swiper
+        :banners="banners"
+        v-if="banners"
+        @siwperImageLoad="siwperImageLoad"
+      />
       <recommend-view :recommends="recommends" />
       <FeatureView></FeatureView>
-      <TabControl :titles="['流行', '新款', '精选']" @tabClick="tabClick" ref="tabControl2"></TabControl>
+      <TabControl
+        :titles="['流行', '新款', '精选']"
+        @tabClick="tabClick"
+        ref="tabControl2"
+      ></TabControl>
       <GoodsList :goods="showGoods"></GoodsList>
     </scroll>
     <BackTop @click.native="backClick" v-show="isShwoBackTop"></BackTop>
@@ -41,10 +49,10 @@ import Scroll from "components/common/scroll/Scroll";
 
 import TabControl from "components/content/tabControl/TabControl";
 import GoodsList from "components/content/goods/GoodsList";
-import BackTop from "components/content/backTop/BackTop";
 
 import { getHomeMultidata, getHomeGoods } from "network/home";
 import { debounce } from "common/utils";
+import { itemListenerMixin, backTopMixin } from "common/mixin.js";
 
 export default {
   created() {
@@ -55,22 +63,30 @@ export default {
     this.getHomeGoods("new");
     this.getHomeGoods("sell");
   },
+  mixins: [itemListenerMixin, backTopMixin],
+
   mounted() {
     // 在created中$refs可能为空
     // 1.监听GoodsListItem中图片加载完成
-    const refresh = debounce(this.$refs.scroll.refresh, 100);
-    this.$bus.$on("itemImageLoad", () => {
-      refresh();
-    });
+    // const drefresh = debounce(this.$refs.scroll.refresh, 100);
+    // this.$bus.$on("itemImageLoad", () => {
+    //   drefresh();
+    // });
+    // 2.使用混入方法实现
   },
   activated() {
     // 激活的时候回到savaY的地方
-    this.$refs.scroll.scrollTo(0, this.savaY, 0);
+    this.$refs.scroll.refresh();
+
+    this.$refs.scroll.scrollTo(0, this.saveY, 0);
+
     this.$refs.scroll.refresh();
   },
   deactivated() {
     // 走的时候记录savaY
-    this.savaY = this.$refs.scroll.getScrollY();
+    this.saveY = this.$refs.scroll.getScrollY();
+    // 取消全局监听事件
+    this.$bus.$off("itemImgLoad", this.itemImgListener());
   },
   components: {
     HomeSwiper,
@@ -81,8 +97,7 @@ export default {
     NavBar,
     TabControl,
     GoodsList,
-    Scroll,
-    BackTop,
+    Scroll
   },
   data() {
     return {
@@ -93,39 +108,38 @@ export default {
       goods: {
         pop: { page: 0, list: [] },
         new: { page: 0, list: [] },
-        sell: { page: 0, list: [] },
+        sell: { page: 0, list: [] }
       },
       currentType: "pop",
-      isShwoBackTop: false,
       tabOffsetTop: 0,
       isTabFixed: false,
-      savaY: 0,
+      saveY: 0
     };
   },
   computed: {
     showGoods() {
       return this.goods[this.currentType].list;
-    },
+    }
   },
   methods: {
     // 网络请求
     getHomeMultidata() {
       getHomeMultidata()
-        .then((res) => {
+        .then(res => {
           this.banners = res.data.data.banner.list;
 
           this.dKeyword = res.data.data.dKeyword.list;
           this.keywords = res.data.data.keywords.list;
           this.recommends = res.data.data.recommend.list;
         })
-        .catch((err) => {
+        .catch(err => {
           console.log(err);
         });
     },
 
     getHomeGoods(type) {
       const page = this.goods[type].page + 1;
-      getHomeGoods(type, page).then((res) => {
+      getHomeGoods(type, page).then(res => {
         this.goods[type].list.push(...res.data.data.list);
         this.goods[type].page += 1;
 
@@ -150,10 +164,7 @@ export default {
       this.$refs.tabControl1.currentIndex = index;
       this.$refs.tabControl2.currentIndex = index;
     },
-    backClick() {
-      scrollTo();
-      this.$refs.scroll.scrollTo(0, 0, 1500);
-    },
+
     contentScroll(position) {
       // 1.判断BackTop是否显示
       this.isShwoBackTop = -position.y > 1000;
@@ -171,8 +182,8 @@ export default {
     // 所有组件都有属性$el，用于获取组件中的元素
     siwperImageLoad() {
       this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop;
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
@@ -185,6 +196,7 @@ export default {
 
 .home-nav {
   background-color: var(--color-tint);
+  color: white;
   width: 100%;
   /* position: fixed;
   top: 0;

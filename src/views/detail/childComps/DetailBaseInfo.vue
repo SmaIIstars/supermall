@@ -5,7 +5,7 @@
     <div class="base-info-price">
       <div class="n-price">{{goods.newPrice}}</div>
       <div class="o-price">{{goods.oldPrice}}</div>
-      <div class="discount">{{goods.discount}}</div>
+      <div class="discount" v-if="goods.discount">{{goods.discount}}</div>
     </div>
     <div class="base-info-other">
       <div v-if="goods.columns[0]">{{goods.columns[0]}}</div>
@@ -18,18 +18,6 @@
         <span>{{goods.services[index-1].name}}</span>
       </div>
     </div>
-    <ul>
-      <li>1</li>
-      <li>2</li>
-      <li>3</li>
-      <li>4</li>
-      <li>5</li>
-      <li>6</li>
-      <li>7</li>
-      <li>8</li>
-      <li>9</li>
-      <li>10</li>
-    </ul>
   </div>
 </template>
 
@@ -52,7 +40,7 @@ export default {
   margin-top: 15px;
 
   color: #999;
-  border-bottom: 2px solid #f2f5f8;
+  border-bottom: 4px solid #f2f5f8;
 }
 .base-info-title {
   top: 0;
@@ -88,13 +76,13 @@ export default {
   left: 3px;
   top: 3px;
   text-align: center;
-  width: 35px;
   height: 15px;
   font-weight: 200;
   color: #fff;
   border-radius: 8px;
   background-color: var(--color-tint);
   font-size: 10px;
+  padding: 0 4px;
 }
 
 .base-info-other {
@@ -112,7 +100,6 @@ export default {
   font-size: 12px;
   justify-content: space-between;
   color: #222;
-  border-bottom: 2px solid #f2f5f8;
 }
 .info-service img {
   width: 10px;

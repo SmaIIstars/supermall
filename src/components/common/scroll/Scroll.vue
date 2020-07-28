@@ -34,6 +34,7 @@ export default {
       click: true,
       probeType: this.probeType,
       pullUpLoad: this.pullUpLoad,
+      // useTransition: false,
     });
     // console.log(this.$refs.wrapper);
 
