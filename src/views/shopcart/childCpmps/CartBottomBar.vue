@@ -3,14 +3,20 @@
   <div class="bottom-bar">
     <div class="check-content">
       <div class="left">
-        <CheckButton class="check-button" :isChecked="isSelectAll" @click.native="checkClick"></CheckButton>
+        <CheckButton
+          class="check-button"
+          :isChecked="isSelectAll"
+          @click.native="checkClick"
+        ></CheckButton>
         <span>全选</span>
       </div>
       <div class="center">
         <div class="totalprice">合计: {{ totalprice }}</div>
       </div>
       <div class="right">
-        <div class="calculate" @click="calculateClick">去结算{{checkedLength}}</div>
+        <div class="calculate" @click="calculateClick">
+          去结算{{ checkedLength }}
+        </div>
       </div>
     </div>
   </div>
@@ -23,16 +29,16 @@ import { mapGetters } from "vuex";
 export default {
   name: "CartBottomBar",
   components: {
-    CheckButton,
+    CheckButton
   },
   methods: {
     checkClick() {
       if (this.isSelectAll) {
-        this.cartList.map((item) => {
+        this.cartList.map(item => {
           item.checked = false;
         });
       } else {
-        this.cartList.map((item) => {
+        this.cartList.map(item => {
           item.checked = true;
         });
       }
@@ -41,18 +47,18 @@ export default {
     },
     calculateClick() {
       if (
-        this.cartList.filter((item) => {
+        this.cartList.filter(item => {
           return item.checked;
         }).length === 0
       ) {
         this.$toast.show("请选择购买的商品", 1500);
       }
-    },
+    }
   },
   computed: {
     ...mapGetters({
       length: "getCartLength",
-      cartList: "cartList",
+      cartList: "cartList"
     }),
     totalprice() {
       if (this.length !== 0) {
@@ -65,12 +71,13 @@ export default {
         return (
           "￥" +
           this.cartList
-            .filter((item) => {
+            .filter(item => {
               return item.checked;
             })
             .reduce((preValue, item) => {
               return preValue + item.count * item.price;
             }, 0)
+            .toFixed(2)
         );
       } else {
         // console.log(this.cartList);
@@ -88,7 +95,7 @@ export default {
       //     }, 0);
     },
     checkedLength() {
-      return this.$store.state.cartList.filter((item) => {
+      return this.$store.state.cartList.filter(item => {
         return item.checked;
       }).length;
     },
@@ -96,11 +103,11 @@ export default {
       if (this.cartList.length === 0) return false;
       // return !this.cartList.filter((item) => !item.checked).length;
 
-      return this.cartList.every((item) => {
+      return this.cartList.every(item => {
         return item.checked;
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>
@@ -147,7 +154,7 @@ export default {
 }
 .totalprice {
   /* right: 0px; */
-  width: 100px;
+  width: 150px;
 }
 .calculate {
   color: white;
