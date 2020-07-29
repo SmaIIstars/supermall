@@ -20,18 +20,10 @@
       :pullUpLoad="true"
       @pullingUp="loadMore"
     >
-      <home-swiper
-        :banners="banners"
-        v-if="banners"
-        @siwperImageLoad="siwperImageLoad"
-      />
+      <HomeSwiper :banners="banners" v-if="banners" @siwperImageLoad="siwperImageLoad" />
       <recommend-view :recommends="recommends" />
       <FeatureView></FeatureView>
-      <TabControl
-        :titles="['流行', '新款', '精选']"
-        @tabClick="tabClick"
-        ref="tabControl2"
-      ></TabControl>
+      <TabControl :titles="['流行', '新款', '精选']" @tabClick="tabClick" ref="tabControl2"></TabControl>
       <GoodsList :goods="showGoods"></GoodsList>
     </scroll>
     <BackTop @click.native="backClick" v-show="isShwoBackTop"></BackTop>
@@ -97,7 +89,7 @@ export default {
     NavBar,
     TabControl,
     GoodsList,
-    Scroll
+    Scroll,
   },
   data() {
     return {
@@ -108,38 +100,38 @@ export default {
       goods: {
         pop: { page: 0, list: [] },
         new: { page: 0, list: [] },
-        sell: { page: 0, list: [] }
+        sell: { page: 0, list: [] },
       },
       currentType: "pop",
       tabOffsetTop: 0,
       isTabFixed: false,
-      saveY: 0
+      saveY: 0,
     };
   },
   computed: {
     showGoods() {
       return this.goods[this.currentType].list;
-    }
+    },
   },
   methods: {
     // 网络请求
     getHomeMultidata() {
       getHomeMultidata()
-        .then(res => {
+        .then((res) => {
           this.banners = res.data.data.banner.list;
 
           this.dKeyword = res.data.data.dKeyword.list;
           this.keywords = res.data.data.keywords.list;
           this.recommends = res.data.data.recommend.list;
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
 
     getHomeGoods(type) {
       const page = this.goods[type].page + 1;
-      getHomeGoods(type, page).then(res => {
+      getHomeGoods(type, page).then((res) => {
         this.goods[type].list.push(...res.data.data.list);
         this.goods[type].page += 1;
 
@@ -182,8 +174,8 @@ export default {
     // 所有组件都有属性$el，用于获取组件中的元素
     siwperImageLoad() {
       this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop;
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
