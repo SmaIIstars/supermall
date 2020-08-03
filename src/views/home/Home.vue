@@ -203,7 +203,7 @@ export default {
   top: 43px;
   overflow: hidden;
   /* margin-top: 44px; */
-  /* height: calc(100%-93px); */
+  /* height: calc(100% - 93px); */
 }
 .tab-control {
   position: relative;

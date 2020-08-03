@@ -1,12 +1,75 @@
 <!--  -->
 <template>
   <div>
-    <h2>个人</h2>
+    <NavBar class="profile-nav">
+      <div slot="center">我的档案</div>
+    </NavBar>
+
+    <div class="profile-title">
+      <div class="right">
+        <img
+          src="https://dss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3482268351,518808587&fm=26&gp=0.jpg"
+          alt
+        />
+      </div>
+      <div class="center">
+        <div>登录/注册</div>
+        <div>绑定手机号</div>
+      </div>
+      <div class="left">&gt;</div>
+    </div>
   </div>
 </template>
 
 <script>
-export default {};
+import NavBar from "components/common/navbar/NavBar";
+
+export default {
+  name: "Profile",
+  props: {
+    message: {
+      type: Object,
+      default() {
+        return null;
+      },
+    },
+  },
+  components: {
+    NavBar,
+  },
+};
 </script>
 <style scoped>
+.profile-nav {
+  background-color: var(--color-tint);
+  color: white;
+}
+.profile-title {
+  background-color: var(--color-tint);
+  padding: 20px;
+  display: flex;
+  justify-content: space-around;
+  color: white;
+}
+.profile-title .right {
+  flex: 1;
+}
+
+.profile-title .right img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+.profile-title .center {
+  flex: 3;
+  padding: 3px;
+}
+
+.profile-title .left {
+  flex: 1;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  text-align: center;
+}
 </style>

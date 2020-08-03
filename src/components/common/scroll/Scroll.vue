@@ -61,6 +61,8 @@ export default {
   methods: {
     // 回到顶部
     scrollTo(x, y, time = 500) {
+      // console.log(this.scroll.scrollTo());
+
       this.scroll && this.scroll.scrollTo(x, y, time);
     },
     // 下拉到底部加载一次需要结束

@@ -8,7 +8,7 @@
       <p class="title">{{ goodsItem.title }}</p>
       <div class="info-nums">
         <span class="price">{{ goodsItem.price }}</span>
-        <span class="collect">
+        <span class="collect" v-if="goodsItem.cfav">
           <img src="~assets/img/common/collect.svg" alt />
           <span>{{ goodsItem.cfav }}</span>
         </span>
@@ -25,8 +25,8 @@ export default {
       type: Object,
       default() {
         return {};
-      }
-    }
+      },
+    },
   },
   methods: {
     imageLoad() {
@@ -48,13 +48,15 @@ export default {
       //   query:{
       //   }
       // });
-    }
+    },
   },
   computed: {
     showImage() {
-      return this.goodsItem.image || this.goodsItem.show.img;
-    }
-  }
+      return (
+        this.goodsItem.img || this.goodsItem.image || this.goodsItem.show.img
+      );
+    },
+  },
 };
 </script>
 <style scoped>
