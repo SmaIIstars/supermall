@@ -18,6 +18,23 @@
       </div>
       <div class="left">&gt;</div>
     </div>
+
+    <div class="sort">
+      <h2>nums:</h2>
+      <h2>{{nums}}</h2>
+      <h2>BubbleSort:</h2>
+      <h2>{{BubbleSort}}</h2>
+      <h2>SelectSort:</h2>
+      <h2>{{SelectSort}}</h2>
+      <h2>InsertSort:</h2>
+      <h2>{{InsertSort}}</h2>
+      <h2>ShellSort:</h2>
+      <h2>{{ShellSort}}</h2>
+      <h2>QuickSort:</h2>
+      <h2>{{QuickSort}}</h2>
+      <h2>nums:</h2>
+      <h2>{{nums}}</h2>
+    </div>
   </div>
 </template>
 
@@ -36,6 +53,149 @@ export default {
   },
   components: {
     NavBar,
+  },
+  data() {
+    return {
+      nums: [100, 52, 43, 64, 32, 6, 6, 65, 56, 687, 98, 89, 812],
+      nums1: [],
+    };
+  },
+  methods: {
+    swap(a, b, num) {
+      var temp = num[b];
+      num[b] = num[a];
+      num[a] = temp;
+    },
+
+    // 枢纽选取
+    median(left, right, num) {
+      let center = Math.floor((left + right) / 2);
+
+      // 3个数排序,先左右
+      if (num[left] > num[right]) {
+        this.swap(left, right, num);
+      }
+      if (num[center] > num[right]) {
+        this.swap(center, right, num);
+      }
+      if (num[center] < num[left]) {
+        this.swap(center, left, num);
+      }
+
+      this.swap(center, right - 1, num);
+      return num[right - 1];
+    },
+
+    quick(left, right, num) {
+      // left找到right结束
+      if (left >= right) return;
+      let pivot = this.median(left, right, num);
+      let i = left;
+      let j = right - 1;
+
+      // 准备就绪,left,right开始移动寻找
+      while (true) {
+        while (num[i] <= pivot && i < j) {
+          i++;
+        }
+        while (num[j] >= pivot && i < j) {
+          j--;
+        }
+        if (i >= j) {
+          break;
+        } else {
+          this.swap(i, j, num);
+        }
+      }
+
+      this.swap(i, right - 1, num);
+      this.quick(left, i - 1, num);
+      this.quick(i + 1, right, num);
+    },
+  },
+  computed: {
+    BubbleSort() {
+      this.nums1 = this.nums.slice();
+      for (let i = 0; i < this.nums1.length; i++) {
+        for (let j = 0; j < this.nums1.length - i - 1; j++) {
+          if (this.nums1[j] > this.nums1[j + 1]) {
+            this.swap(j, j + 1, this.nums1);
+          }
+        }
+      }
+      return this.nums1;
+    },
+    SelectSort() {
+      this.nums1 = this.nums.slice();
+      for (let i = 0; i < this.nums1.length; i++) {
+        for (let j = i; j < this.nums1.length; j++) {
+          if (this.nums1[i] > this.nums1[j]) {
+            this.swap(i, j, this.nums1);
+          }
+        }
+      }
+      return this.nums1;
+    },
+    InsertSort() {
+      this.nums1 = this.nums.slice();
+      for (let i = 1; i < this.nums1.length; i++) {
+        let j = i;
+        let temp = this.nums1[j];
+
+        while (j > 0 && this.nums1[j - 1] > temp) {
+          this.nums1[j] = this.nums1[j - 1];
+          j--;
+        }
+
+        this.nums1[j] = temp;
+      }
+      return this.nums1;
+    },
+    ShellSort() {
+      this.nums1 = this.nums.slice();
+      // let gap = Math.floor(this.nums1.length / 2);
+
+      // while (gap >= 1) {
+      //   for (let i = gap; i < this.nums1.length; i++) {
+      //     let j = i;
+      //     let temp = this.nums1[j];
+
+      //     while (this.nums1[j - gap] > temp && j > gap - 1) {
+      //       this.nums1[j] = this.nums1[j - gap];
+      //       j -= gap;
+      //     }
+      //     this.nums1[j] = temp;
+      //   }
+      //   gap = Math.floor(gap / 2);
+      // }
+
+      // 1.间距
+      let gap = Math.floor(this.nums1.length / 2);
+
+      // 2.间距缩小
+      while (gap >= 1) {
+        // 选择排序
+        for (let i = gap; i < this.nums1.length; i++) {
+          let j = i;
+          let temp = this.nums1[j];
+
+          while (j > gap - 1 && temp < this.nums1[j - gap]) {
+            this.nums1[j] = this.nums1[j - gap];
+            j -= gap;
+          }
+          this.nums1[j] = temp;
+        }
+
+        gap = Math.floor(gap / 2);
+      }
+
+      return this.nums1;
+    },
+    QuickSort() {
+      this.nums1 = this.nums.slice();
+      this.quick(0, this.nums1.length - 1, this.nums1);
+      return this.nums1;
+    },
   },
 };
 </script>
@@ -71,5 +231,9 @@ export default {
   bottom: 0;
   margin: auto 0;
   text-align: center;
+}
+
+.sort > h2 {
+  font-size: 16px;
 }
 </style>
