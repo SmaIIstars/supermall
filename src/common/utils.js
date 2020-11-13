@@ -12,12 +12,12 @@
  }
 
  // 节流函数（时间戳+定时器）
- export function trottle(func, delay) {
-   let timer = nulll;
+ export function throttle(func, delay) {
+   let timer = null;
    let startTime = Date.now();
    return function (...args) {
      let curTime = Date.now();
-     let remaining = delay - (curTime - startTime);
+     let remaining = delay - (curTime - startTime);h
 
      clearTimeout(timer);
      if (remaining <= 0) {
